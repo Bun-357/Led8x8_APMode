@@ -58,7 +58,7 @@ int data2D90R[8][8];
 int data2D180R[8][8];
 int data2D270R[8][8];
 //
-
+char temp[1100];
 String data_file;
 boolean keep_data = false;
 int picN = 0;
@@ -210,8 +210,8 @@ void handle_chagePic() {
   /*
 
   */
-  char temp[1000];
-  snprintf ( temp, 1000,
+
+  snprintf ( temp, 1100,
 
              "<html>\
   <head>\
@@ -222,19 +222,21 @@ void handle_chagePic() {
   <body>\
     <h1>Hello from ESP8266!</h1>\
     <p>have %d of pic</p>\
-    <button onclick=\"myFunction2()\">send :)</button>\
+    <button onclick=\"myFunction2()\">Show picture</button>\
    <input type=\"text\"  value=\"chose number pictrue\" id=\"numP\"/>\
    <form action=\"http://192.168.4.1\">\
     <input type=\"submit\" value=\"back\">\
    </form>\
-   <form action=\"http://192.168.4.1/deletePic?d=\"1\"\">\
-    <input type=\"submit\" value=\"clear all EEPROM\">\
-   </form>\
+    <button onclick=\"myFunctionD()\">Delete all picture</button>\
   </body>\
   <script>\
   function myFunction2() {\
    sendTo = document.getElementById('numP').value;\
    var y = \"http://192.168.4.1/chagePic?pic=\"+sendTo;\
+   var x = location.href = y;\
+  }\
+  function myFunctionD() {\
+   var y = \"http://192.168.4.1/deletePic?delete=1\";\
    var x = location.href = y;\
   }\
   </script>\
@@ -248,21 +250,33 @@ void handle_chagePic() {
 }
 
 void handle_deletePic() {
-  String state = server.arg("d");
+  String state = server.arg("delete");
   int d = state.toInt();
+  Serial.print("revice ");
+  Serial.println(d);
   /*
 
   */
   if (d == 1) {
+    Serial.println("Start delete all picture");
     EEPROM.begin(512);
     // write a 0 to all 512 bytes of the EEPROM
-    for (int i = 0; i < 512; i++)
+    for (int i = 0; i < 512; i++) {
       EEPROM.write(i, 0);
+      EEPROM.commit();
 
-    // turn the LED on when we're done
+      // turn the LED on when we're done
+      // blink LED to indicate activity
+      blinkState = !blinkState;
+      digitalWrite(LED_PIN, blinkState);
 
-    digitalWrite(2, HIGH);
+    }
+    delay(20);
     EEPROM.end();
+    delay(500);
+    EEPROM.begin(512);
+    delay(500);
+    picN = EEPROM.read(0);
   }
   server.send(200, "text/html", data_file);
 }

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+
+<script>
+ 
+  
+  //var count = 0;
+  var dataS = [60,66,149,161,161,149,66,60];
+  //a0b252c114d243e127f243g114h252i
+  var dataW = [0,252,114,243,127,243,114,252];
+  var sendTo = "";
+  
+  //document.getElementById("data").innerHTML =;
+	
+	
+  
+	function myFunction3(data8x8) {
+		//document.getElementById("field2").value = document.getElementById("field1").value;
+		//sendTo = document.getElementById('lolz').value;
+		//microgear.chat(sendTo,"a"+dataS[0]+"b"+dataS[1]+"c"+dataS[2]+"d"+dataS[3]+"e"+dataS[4]+"f"+dataS[5]+"g"+dataS[6]+"h"+dataS[7]+"i"+ALIAS+"j");
+		//microgear.chat(sendTo,data8x8.toString()+","+ALIAS);
+		//{0,252,114,243,127,243,114,252}
+		var y = "http://192.168.4.1/led?state="+data8x8.toString()+"!";
+        var x = location.href = y;
+		//document.getElementById("data3").innerHTML = x;
+		//location.href = "http://192.168.4.1/led?state="+data8x8.toString();
+		
+		
+		
+    }
+
+</script>
+
+<html>
+
+<head>
+<style>
+.big{ width: 2em; height: 2em; }
+</style>
+</head>
+
+<body>
+
+
+
+<table style="width:20%">
+  <tr>
+    <td><input type="radio" class="big" name="colors1" value=1 id="r10" onclick="uncheck(this.id,0)"></td>
+    <td><input type="radio" class="big" name="colors2" value=1 id="r20" onclick="uncheck(this.id,1)"></td>
+    <td><input type="radio" class="big" name="colors3" value=1 id="r30" onclick="uncheck(this.id,2)"></td>
+    <td><input type="radio" class="big" name="colors4" value=1 id="r40" onclick="uncheck(this.id,3)"></td>
+    <td><input type="radio" class="big" name="colors5" value=1 id="r50" onclick="uncheck(this.id,4)"></td>
+    <td><input type="radio" class="big" name="colors6" value=1 id="r60" onclick="uncheck(this.id,5)"></td>
+    <td><input type="radio" class="big" name="colors7" value=1 id="r70" onclick="uncheck(this.id,6)"></td>
+    <td><input type="radio" class="big" name="colors8" value=1 id="r80" onclick="uncheck(this.id,7)"></td>
+    
+  </tr>
+  <tr>
+   <td><input type="radio" class="big" name="colors9" value=2 id="r11" onclick="uncheck(this.id,8)"></td>
+    <td><input type="radio" class="big" name="colors10" value=2 id="r21" onclick="uncheck(this.id,9)"></td>
+    <td><input type="radio" class="big" name="colors11" value=2 id="r31" onclick="uncheck(this.id,10)"></td>
+    <td><input type="radio" class="big" name="colors12" value=2 id="r41" onclick="uncheck(this.id,11)"></td>
+    <td><input type="radio" class="big" name="colors13" value=2 id="r51" onclick="uncheck(this.id,12)"></td>
+    <td><input type="radio" class="big" name="colors14" value=2 id="r61" onclick="uncheck(this.id,13)"></td>
+    <td><input type="radio" class="big" name="colors15" value=2 id="r71" onclick="uncheck(this.id,14)"></td>
+    <td><input type="radio" class="big" name="colors16" value=2 id="r81" onclick="uncheck(this.id,15)"></td>
+  </tr>
+  <tr>
+   <td><input type="radio" class="big" name="colors17" value=4 id="r12" onclick="uncheck(this.id,16)"></td>
+    <td><input type="radio" class="big" name="colors18" value=4 id="r22" onclick="uncheck(this.id,17)"></td>
+    <td><input type="radio" class="big" name="colors19" value=4 id="r32" onclick="uncheck(this.id,18)"></td>
+    <td><input type="radio" class="big" name="colors20" value=4 id="r42" onclick="uncheck(this.id,19)"></td>
+    <td><input type="radio" class="big" name="colors21" value=4 id="r52" onclick="uncheck(this.id,20)"></td>
+    <td><input type="radio" class="big" name="colors22" value=4 id="r62" onclick="uncheck(this.id,21)"></td>
+    <td><input type="radio" class="big" name="colors23" value=4 id="r72" onclick="uncheck(this.id,22)"></td>
+    <td><input type="radio" class="big" name="colors24" value=4 id="r82" onclick="uncheck(this.id,23)"></td>
+  </tr>
+  <tr>
+   <td><input type="radio" class="big" name="colors25" value=8 id="r13"  onclick="uncheck(this.id,24)"></td>
+    <td><input type="radio" class="big" name="colors26" value=8 id="r23" onclick="uncheck(this.id,25)"></td>
+    <td><input type="radio" class="big" name="colors27" value=8 id="r33" onclick="uncheck(this.id,26)"></td>
+    <td><input type="radio" class="big" name="colors28" value=8 id="r43" onclick="uncheck(this.id,27)"></td>
+    <td><input type="radio" class="big" name="colors29" value=8 id="r53" onclick="uncheck(this.id,28)"></td>
+    <td><input type="radio" class="big" name="colors30" value=8 id="r63" onclick="uncheck(this.id,29)"></td>
+    <td><input type="radio" class="big" name="colors31" value=8 id="r73" onclick="uncheck(this.id,30)"></td>
+    <td><input type="radio" class="big" name="colors32" value=8 id="r83" onclick="uncheck(this.id,31)"></td>
+  </tr>
+  <tr>
+   <td><input type="radio" class="big" name="colors33" value=16 id="r14"  onclick="uncheck(this.id,32)"></td>
+    <td><input type="radio" class="big" name="colors34" value=16 id="r24" onclick="uncheck(this.id,33)"></td>
+    <td><input type="radio" class="big" name="colors35" value=16 id="r34" onclick="uncheck(this.id,34)"></td>
+    <td><input type="radio" class="big" name="colors36" value=16 id="r44" onclick="uncheck(this.id,35)"></td>
+    <td><input type="radio" class="big" name="colors37" value=16 id="r54" onclick="uncheck(this.id,36)"></td>
+    <td><input type="radio" class="big" name="colors38" value=16 id="r64" onclick="uncheck(this.id,37)"></td>
+    <td><input type="radio" class="big" name="colors39" value=16 id="r74" onclick="uncheck(this.id,38)"></td>
+    <td><input type="radio" class="big" name="colors40" value=16 id="r84" onclick="uncheck(this.id,39)"></td>
+  </tr>
+  <tr>
+   <td><input type="radio" class="big" name="colors41" value=32 id="r15"  onclick="uncheck(this.id,40)"></td>
+    <td><input type="radio" class="big" name="colors42" value=32 id="r25" onclick="uncheck(this.id,41)"></td>
+    <td><input type="radio" class="big" name="colors43" value=32 id="r35" onclick="uncheck(this.id,42)"></td>
+    <td><input type="radio" class="big" name="colors44" value=32 id="r45" onclick="uncheck(this.id,43)"></td>
+    <td><input type="radio" class="big" name="colors45" value=32 id="r55" onclick="uncheck(this.id,44)"></td>
+    <td><input type="radio" class="big" name="colors46" value=32 id="r65" onclick="uncheck(this.id,45)"></td>
+    <td><input type="radio" class="big" name="colors47" value=32 id="r75" onclick="uncheck(this.id,46)"></td>
+    <td><input type="radio" class="big" name="colors48" value=32 id="r85" onclick="uncheck(this.id,47)"></td>
+  </tr>
+  <tr>
+   <td><input type="radio" class="big" name="colors49" value=64 id="r16"  onclick="uncheck(this.id,48)"></td>
+    <td><input type="radio" class="big" name="colors50" value=64 id="r26" onclick="uncheck(this.id,49)"></td>
+    <td><input type="radio" class="big" name="colors51" value=64 id="r36" onclick="uncheck(this.id,50)"></td>
+    <td><input type="radio" class="big" name="colors52" value=64 id="r46" onclick="uncheck(this.id,51)"></td>
+    <td><input type="radio" class="big" name="colors53" value=64 id="r56" onclick="uncheck(this.id,52)"></td>
+    <td><input type="radio" class="big" name="colors54" value=64 id="r66" onclick="uncheck(this.id,53)"></td>
+    <td><input type="radio" class="big" name="colors55" value=64 id="r76" onclick="uncheck(this.id,54)"></td>
+    <td><input type="radio" class="big" name="colors56" value=64 id="r86" onclick="uncheck(this.id,55)"></td>
+  </tr>
+  <tr>
+   <td><input type="radio" class="big" name="colors57" value=128 id="r17"  onclick="uncheck(this.id,56)"></td>
+    <td><input type="radio" class="big" name="colors58" value=128 id="r27" onclick="uncheck(this.id,57)"></td>
+    <td><input type="radio" class="big" name="colors59" value=128 id="r37" onclick="uncheck(this.id,58)"></td>
+    <td><input type="radio" class="big" name="colors60" value=128 id="r47" onclick="uncheck(this.id,59)"></td>
+    <td><input type="radio" class="big" name="colors61" value=128 id="r57" onclick="uncheck(this.id,60)"></td>
+    <td><input type="radio" class="big" name="colors62" value=128 id="r67" onclick="uncheck(this.id,61)"></td>
+    <td><input type="radio" class="big" name="colors63" value=128 id="r77" onclick="uncheck(this.id,62)"></td>
+    <td><input type="radio" class="big" name="colors64" value=128 id="r87" onclick="uncheck(this.id,63)"></td>
+  </tr>
+</table>
+
+<p>Click the "Try it" button to display the value of the value attribute of the radio button.</p>
+
+<button onclick="myFunction()" >Try it</button>
+
+<form action="http://192.168.4.1/chagePic">
+    <input type="submit" value="Check Pic in esp8266">
+</form>
+
+<p id="demo">data</p>
+
+
+
+
+
+
+
+
+<script>
+var z = [0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0];
+function myFunction() {
+    //var x = document.getElementById("myRadio1").value;
+    //document.getElementById("demo").innerHTML = x;
+    var row1 = [];
+    var row2 = [];
+    var row3 = [];
+    var row4 = [];
+    var row5 = [];
+    var row6 = [];
+    var row7 = [];
+    var row8 = [];
+
+    //
+	
+    //get row 1
+
+    if(document.getElementById("r10").checked ){
+       row1[0] = document.getElementById("r10").value;
+    }else{
+       row1[0] = 0;
+    }
+if(document.getElementById("r11").checked ){
+       row1[1] = document.getElementById("r11").value;
+    }else{
+       row1[1] = 0;
+    }
+if(document.getElementById("r12").checked ){
+       row1[2] = document.getElementById("r12").value;
+    }else{
+       row1[2] = 0;
+    }
+if(document.getElementById("r13").checked ){
+       row1[3] = document.getElementById("r13").value;
+    }else{
+       row1[3] = 0;
+    }
+if(document.getElementById("r14").checked ){
+       row1[4] = document.getElementById("r14").value;
+    }else{
+       row1[4] = 0;
+    }
+if(document.getElementById("r15").checked ){
+       row1[5] = document.getElementById("r15").value;
+    }else{
+       row1[5] = 0;
+    }
+if(document.getElementById("r16").checked ){
+       row1[6] = document.getElementById("r16").value;
+    }else{
+       row1[6] = 0;
+    }
+if(document.getElementById("r17").checked ){
+       row1[7] = document.getElementById("r17").value;
+    }else{
+       row1[7] = 0;
+    }
+
+row1[8] = parseInt(row1[0])+ parseInt(row1[1])+ parseInt(row1[2])+ parseInt(row1[3])+ parseInt(row1[4])+ parseInt(row1[5])+ parseInt(row1[6])+ parseInt(row1[7]);
+// end get row1
+
+//get row2
+if(document.getElementById("r20").checked ){
+       row2[0] = document.getElementById("r20").value;
+    }else{
+       row2[0] = 0;
+    }
+if(document.getElementById("r21").checked ){
+       row2[1] = document.getElementById("r21").value;
+    }else{
+       row2[1] = 0;
+    }
+if(document.getElementById("r22").checked ){
+       row2[2] = document.getElementById("r22").value;
+    }else{
+       row2[2] = 0;
+    }
+if(document.getElementById("r23").checked ){
+       row2[3] = document.getElementById("r23").value;
+    }else{
+       row2[3] = 0;
+    }
+if(document.getElementById("r24").checked ){
+       row2[4] = document.getElementById("r24").value;
+    }else{
+       row2[4] = 0;
+    }
+if(document.getElementById("r25").checked ){
+       row2[5] = document.getElementById("r25").value;
+    }else{
+       row2[5] = 0;
+    }
+if(document.getElementById("r26").checked ){
+       row2[6] = document.getElementById("r26").value;
+    }else{
+       row2[6] = 0;
+    }
+if(document.getElementById("r27").checked ){
+       row2[7] = document.getElementById("r27").value;
+    }else{
+       row2[7] = 0;
+    }
+
+row2[8] = parseInt(row2[0])+ parseInt(row2[1])+ parseInt(row2[2])+ parseInt(row2[3])+ parseInt(row2[4])+ parseInt(row2[5])+ parseInt(row2[6])+ parseInt(row2[7]);
+
+// end get row2
+
+// get row3
+if(document.getElementById("r30").checked ){
+       row3[0] = document.getElementById("r30").value;
+    }else{
+       row3[0] = 0;
+    }
+if(document.getElementById("r31").checked ){
+       row3[1] = document.getElementById("r31").value;
+    }else{
+       row3[1] = 0;
+    }
+if(document.getElementById("r32").checked ){
+       row3[2] = document.getElementById("r32").value;
+    }else{
+       row3[2] = 0;
+    }
+if(document.getElementById("r33").checked ){
+       row3[3] = document.getElementById("r33").value;
+    }else{
+       row3[3] = 0;
+    }
+if(document.getElementById("r34").checked ){
+       row3[4] = document.getElementById("r34").value;
+    }else{
+       row3[4] = 0;
+    }
+if(document.getElementById("r35").checked ){
+       row3[5] = document.getElementById("r35").value;
+    }else{
+       row3[5] = 0;
+    }
+if(document.getElementById("r36").checked ){
+       row3[6] = document.getElementById("r36").value;
+    }else{
+       row3[6] = 0;
+    }
+if(document.getElementById("r37").checked ){
+       row3[7] = document.getElementById("r37").value;
+    }else{
+       row3[7] = 0;
+    }
+
+row3[8] = parseInt(row3[0])+ parseInt(row3[1])+ parseInt(row3[2])+ parseInt(row3[3])+ parseInt(row3[4])+ parseInt(row3[5])+ parseInt(row3[6])+ parseInt(row3[7]);
+// end get row3
+
+// get row4
+if(document.getElementById("r40").checked ){
+       row4[0] = document.getElementById("r40").value;
+    }else{
+       row4[0] = 0;
+    }
+if(document.getElementById("r41").checked ){
+       row4[1] = document.getElementById("r41").value;
+    }else{
+       row4[1] = 0;
+    }
+if(document.getElementById("r42").checked ){
+       row4[2] = document.getElementById("r42").value;
+    }else{
+       row4[2] = 0;
+    }
+if(document.getElementById("r43").checked ){
+       row4[3] = document.getElementById("r43").value;
+    }else{
+       row4[3] = 0;
+    }
+if(document.getElementById("r44").checked ){
+       row4[4] = document.getElementById("r44").value;
+    }else{
+       row4[4] = 0;
+    }
+if(document.getElementById("r45").checked ){
+       row4[5] = document.getElementById("r45").value;
+    }else{
+       row4[5] = 0;
+    }
+if(document.getElementById("r46").checked ){
+       row4[6] = document.getElementById("r46").value;
+    }else{
+       row4[6] = 0;
+    }
+if(document.getElementById("r47").checked ){
+       row4[7] = document.getElementById("r47").value;
+    }else{
+       row4[7] = 0;
+    }
+
+row4[8] = parseInt(row4[0])+ parseInt(row4[1])+ parseInt(row4[2])+ parseInt(row4[3])+ parseInt(row4[4])+ parseInt(row4[5])+ parseInt(row4[6])+ parseInt(row4[7]);
+
+//end get row4
+
+//   get row5
+if(document.getElementById("r50").checked ){
+       row5[0] = document.getElementById("r50").value;
+    }else{
+       row5[0] = 0;
+    }
+if(document.getElementById("r51").checked ){
+       row5[1] = document.getElementById("r51").value;
+    }else{
+       row5[1] = 0;
+    }
+if(document.getElementById("r52").checked ){
+       row5[2] = document.getElementById("r52").value;
+    }else{
+       row5[2] = 0;
+    }
+if(document.getElementById("r53").checked ){
+       row5[3] = document.getElementById("r53").value;
+    }else{
+       row5[3] = 0;
+    }
+if(document.getElementById("r54").checked ){
+       row5[4] = document.getElementById("r54").value;
+    }else{
+       row5[4] = 0;
+    }
+if(document.getElementById("r55").checked ){
+       row5[5] = document.getElementById("r55").value;
+    }else{
+       row5[5] = 0;
+    }
+if(document.getElementById("r56").checked ){
+       row5[6] = document.getElementById("r56").value;
+    }else{
+       row5[6] = 0;
+    }
+if(document.getElementById("r57").checked ){
+       row5[7] = document.getElementById("r57").value;
+    }else{
+       row5[7] = 0;
+    }
+
+row5[8] = parseInt(row5[0])+ parseInt(row5[1])+ parseInt(row5[2])+ parseInt(row5[3])+ parseInt(row5[4])+ parseInt(row5[5])+ parseInt(row5[6])+ parseInt(row5[7]);
+
+//   end get row5
+
+//  get row6
+if(document.getElementById("r60").checked ){
+       row6[0] = document.getElementById("r60").value;
+    }else{
+       row6[0] = 0;
+    }
+if(document.getElementById("r61").checked ){
+       row6[1] = document.getElementById("r61").value;
+    }else{
+       row6[1] = 0;
+    }
+if(document.getElementById("r62").checked ){
+       row6[2] = document.getElementById("r62").value;
+    }else{
+       row6[2] = 0;
+    }
+if(document.getElementById("r63").checked ){
+       row6[3] = document.getElementById("r63").value;
+    }else{
+       row6[3] = 0;
+    }
+if(document.getElementById("r64").checked ){
+       row6[4] = document.getElementById("r64").value;
+    }else{
+       row6[4] = 0;
+    }
+if(document.getElementById("r65").checked ){
+       row6[5] = document.getElementById("r65").value;
+    }else{
+       row6[5] = 0;
+    }
+if(document.getElementById("r66").checked ){
+       row6[6] = document.getElementById("r66").value;
+    }else{
+       row6[6] = 0;
+    }
+if(document.getElementById("r67").checked ){
+       row6[7] = document.getElementById("r67").value;
+    }else{
+       row6[7] = 0;
+    }
+
+row6[8] = parseInt(row6[0])+ parseInt(row6[1])+ parseInt(row6[2])+ parseInt(row6[3])+ parseInt(row6[4])+ parseInt(row6[5])+ parseInt(row6[6])+ parseInt(row6[7]);
+
+//  end get row6
+
+// get row7
+if(document.getElementById("r70").checked ){
+       row7[0] = document.getElementById("r70").value;
+    }else{
+       row7[0] = 0;
+    }
+if(document.getElementById("r71").checked ){
+       row7[1] = document.getElementById("r71").value;
+    }else{
+       row7[1] = 0;
+    }
+if(document.getElementById("r72").checked ){
+       row7[2] = document.getElementById("r72").value;
+    }else{
+       row7[2] = 0;
+    }
+if(document.getElementById("r73").checked ){
+       row7[3] = document.getElementById("r73").value;
+    }else{
+       row7[3] = 0;
+    }
+if(document.getElementById("r74").checked ){
+       row7[4] = document.getElementById("r74").value;
+    }else{
+       row7[4] = 0;
+    }
+if(document.getElementById("r75").checked ){
+       row7[5] = document.getElementById("r75").value;
+    }else{
+       row7[5] = 0;
+    }
+if(document.getElementById("r76").checked ){
+       row7[6] = document.getElementById("r76").value;
+    }else{
+       row7[6] = 0;
+    }
+if(document.getElementById("r77").checked ){
+       row7[7] = document.getElementById("r77").value;
+    }else{
+       row7[7] = 0;
+    }
+
+row7[8] = parseInt(row7[0])+ parseInt(row7[1])+ parseInt(row7[2])+ parseInt(row7[3])+ parseInt(row7[4])+ parseInt(row7[5])+ parseInt(row7[6])+ parseInt(row7[7]);
+// end get row7
+
+//>>>  get row8
+if(document.getElementById("r80").checked ){
+       row8[0] = document.getElementById("r80").value;
+    }else{
+       row8[0] = 0;
+    }
+if(document.getElementById("r81").checked ){
+       row8[1] = document.getElementById("r81").value;
+    }else{
+       row8[1] = 0;
+    }
+if(document.getElementById("r82").checked ){
+       row8[2] = document.getElementById("r82").value;
+    }else{
+       row8[2] = 0;
+    }
+if(document.getElementById("r83").checked ){
+       row8[3] = document.getElementById("r83").value;
+    }else{
+       row8[3] = 0;
+    }
+if(document.getElementById("r84").checked ){
+       row8[4] = document.getElementById("r84").value;
+    }else{
+       row8[4] = 0;
+    }
+if(document.getElementById("r85").checked ){
+       row8[5] = document.getElementById("r85").value;
+    }else{
+       row8[5] = 0;
+    }
+if(document.getElementById("r86").checked ){
+       row8[6] = document.getElementById("r86").value;
+    }else{
+       row8[6] = 0;
+    }
+if(document.getElementById("r87").checked ){
+       row8[7] = document.getElementById("r87").value;
+    }else{
+       row8[7] = 0;
+    }
+
+row8[8] = parseInt(row8[0])+ parseInt(row8[1])+ parseInt(row8[2])+ parseInt(row8[3])+ parseInt(row8[4])+ parseInt(row8[5])+ parseInt(row8[6])+ parseInt(row8[7]);
+//  >>>>  end get row8
+    document.getElementById("demo").innerHTML = "row1 = "+row1[8]+" row2 = "+row2[8]+" row3= "+row3[8]+"  row4= "+row4[8]+"  row5= "+row5[8]
+	+"  row6= "+row6[8]+" row7= "+row7[8]+"  row8= "+row8[8];
+	
+	//send
+	var temps = [row1[8],row2[8],row3[8],row4[8],row5[8],row6[8],row7[8],row8[8]];
+	myFunction3(temps);
+	//
+	
+    
+	//
+	
+	
+	//
+}
+
+function uncheck(xx,yy) {
+
+		if(document.getElementById(xx).checked && z[yy] == 1){
+			document.getElementById(xx).checked = false;
+			z[yy] = 0;
+		}
+
+		if(document.getElementById(xx).checked && z[yy] == 0){
+			document.getElementById(xx).checked = true;
+			z[yy] = 1;
+		}
+  
+	}
+</script>
+
+</body>
+</html>
+

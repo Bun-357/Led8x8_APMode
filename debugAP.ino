@@ -88,6 +88,7 @@ void rotea90();
 void showPic();
 void checkPicInEEPROM();
 void setupMPU6050();
+void deletePicById(int numId);
 
 /* Just a little test message.  Go to http://192.168.4.1 in a web browser
    connected to this access point to see it.
@@ -131,7 +132,8 @@ void handle_led() {
 
     }//end slip string
 
-    if (keep_data) {
+    if (keep_data && (picN < 6)) {
+      //must check null in eeprom
       EEPROM.begin(512);
       int t = 0;
       Serial.print("statr add ");
@@ -162,17 +164,29 @@ void handle_led() {
       // EEPROM.commit();
 
       showPic();
-      String data_file = readFiles();
+      String nameF = "index.html";
+      String data_file = readFiles(nameF);
       server.send(200, "text/html", data_file);
       //data_file = "";
       keep_data = false;
       EEPROM.end();
+      checkPicInEEPROM();
+    } else {
+      //showPic();
+      String nameF = "index.html";
+      String data_file = readFiles(nameF);
+      server.send(200, "text/html", data_file);
+      //data_file = "";
+      keep_data = false;
+      EEPROM.end();
+      checkPicInEEPROM();
     }
 
   }
 
 }
 void handleRoot() {
+  checkPicInEEPROM();
   //  String state = server.arg("pic");
   //  EEPROM.begin(512);
   //  int num = state.toInt();
@@ -194,7 +208,8 @@ void handleRoot() {
   //data_file.toCharArray(c, sizeF);
   //snprintf(temp, sizeF,c,picN,555);
   //delay(100);
-  String data_file = readFiles();
+  String nameF = "index.html";
+  String data_file = readFiles(nameF);
   server.send(200, "text/html", data_file);
   //data_file = "";
 
@@ -202,6 +217,7 @@ void handleRoot() {
 
 void handle_chagePic() {
   //String state = server.arg("pic");
+  checkPicInEEPROM();
   EEPROM.begin(512);
   int num = server.arg("pic").toInt();
   Serial.println(num);
@@ -218,9 +234,7 @@ void handle_chagePic() {
 
   */
   char temp[1020];
-  snprintf ( temp, 1020,
-
-             "<html>\
+  snprintf ( temp, 1020,"<html>\
   <head>\
     <style>\
       body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
@@ -229,6 +243,7 @@ void handle_chagePic() {
   <body>\
     <h1>Hello from ESP8266!</h1>\
     <p>have %d of pic</p>\
+    <div id=\"result\">_</div>\
     <button onclick=\"myFunction2()\">Show picture</button>\
    <input type=\"text\"  placeholder=\"chose number pictrue\" id=\"numP\"/>\
    <form action=\"http://192.168.4.1\">\
@@ -237,6 +252,7 @@ void handle_chagePic() {
     <button onclick=\"myFunctionD()\">Delete all picture</button>\
   </body>\
   <script>\
+   document.getElementById(\"result\").innerHTML = localStorage.getItem(\"lastnameX\");\
   function myFunction2() {\
    sendTo = document.getElementById('numP').value;\
    var y = \"http://192.168.4.1/chagePic?pic=\"+sendTo;\
@@ -286,15 +302,18 @@ void handle_deletePic() {
     delay(500);
     // EEPROM.begin(512);
     //delay(500);
-    // picN = EEPROM.read(0);
+    picN = 0;
     checkPicInEEPROM();
+    showPic();
   }
-  String data_file = readFiles();
+  String nameF = "index.html";
+  String data_file = readFiles(nameF);
   server.send(200, "text/html", data_file);
   //data_file = "";
 }
 
 void handle_showPic() {
+  checkPicInEEPROM();
   Serial.println("handle_showPic");
   //String state = server.arg("pic");
   int num = server.arg("pic").toInt();
@@ -308,24 +327,28 @@ void handle_showPic() {
     showPic();
     EEPROM.end();
   }
-
   /*
 
   */
-  char temp[2820];
-  snprintf ( temp, 2820, "<html>\
+             /*
+
+             */
+             char temp[2900];
+             snprintf ( temp, 2900, "<html>\
              <body>\
              <style>\
              .intro {\
-             border:1px solid #d3d3d3;\
-             transform: rotate(90deg);\
-           }\
+                     border: 1px solid #d3d3d3;\
+                     transform: rotate(90deg);\
+                    }\
              </style>\
              <p>have %d of pic</p>\
-<canvas class=\"intro\" id=\"myCanvas1\" width=\"88\" height=\"88\"onclick=\"showPicture(1)\"></canvas>\
+             <canvas class=\"intro\" id=\"myCanvas1\" width=\"88\" height=\"88\"onclick=\"showPicture(1)\"></canvas>\
+<button onclick=\"myFunctionD()\">Delete this picture</button>\
 <canvas class=\"intro\" id=\"myCanvas2\" width=\"88\" height=\"88\"onclick=\"showPicture(2)\"></canvas>\
 <canvas class=\"intro\" id=\"myCanvas3\" width=\"88\" height=\"88\"onclick=\"showPicture(3)\"></canvas>\
 <canvas class=\"intro\" id=\"myCanvas4\" width=\"88\" height=\"88\"onclick=\"showPicture(4)\"></canvas>\
+<button onclick=\"myFunctionD()\">Delete this picture</button>\
 <canvas class=\"intro\" id=\"myCanvas5\" width=\"88\" height=\"88\"onclick=\"showPicture(5)\"></canvas>\
 <canvas class=\"intro\" id=\"myCanvas6\" width=\"88\" height=\"88\"onclick=\"showPicture(6)\"></canvas>\
 <form action=\"http://192.168.4.1\">\
@@ -436,7 +459,194 @@ function reverseArr(input) {\
   }
 }
 
+void handle_tempPage() {
+   char temp[1200];
+             snprintf ( temp, 1200, "<html>\
+              <body>\
+              <p>have %d</p>\
+             <form id=\"dj\" action=\"http://192.168.4.1/showPicT\">\
+    <input type=\"submit\" value=\"back\">\
+   </form>\
+   <script>\
+   localStorage.setItem(\"pic1\", \"%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\");\
+   document.forms[\"dj\"].submit();\
+   </script>\
+</body>\
+</html>", picN,
+             dataPack[0][7], dataPack[0][6], dataPack[0][5], dataPack[0][4], dataPack[0][3], dataPack[0][2], dataPack[0][1], dataPack[0][0],
+             dataPack[1][7], dataPack[1][6], dataPack[1][5], dataPack[1][4], dataPack[1][3], dataPack[1][2], dataPack[1][1], dataPack[1][0],
+             dataPack[2][7], dataPack[2][6], dataPack[2][5], dataPack[2][4], dataPack[2][3], dataPack[2][2], dataPack[2][1], dataPack[2][0],
+             dataPack[3][7], dataPack[3][6], dataPack[3][5], dataPack[3][4], dataPack[3][3], dataPack[3][2], dataPack[3][1], dataPack[3][0],
+             dataPack[4][7], dataPack[4][6], dataPack[4][5], dataPack[4][4], dataPack[4][3], dataPack[4][2], dataPack[4][1], dataPack[4][0],
+             dataPack[5][7], dataPack[5][6], dataPack[5][5], dataPack[5][4], dataPack[5][3], dataPack[5][2], dataPack[5][1], dataPack[5][0]);
+server.send(200, "text/html", temp);
+}
 
+void handle_showPicT() {
+   checkPicInEEPROM();
+  Serial.println("handle_showPic");
+  //String state = server.arg("pic");
+  int num = server.arg("pic").toInt();
+  EEPROM.begin(512);
+  Serial.println(num);
+  if (num > 0) {
+    num -= 1;
+    for (int i = (8 * num); i < 8 + (8 * num); i++) {
+      dataT[i - ((8 * num))] = EEPROM.read(i);
+    }
+    showPic();
+    EEPROM.end();
+  }
+  /*
+   * 
+   */
+   char temp[2940];
+            
+             snprintf ( temp, 2940, "<html>\
+             <body>\
+             <style>\
+             .intro {\
+                     border: 1px solid #d3d3d3;\
+                     transform: rotate(90deg);\
+                    }\
+             </style>\
+             <p>have %d of pic</p>\
+             <canvas class=\"intro\" id=\"myCanvas1\" width=\"88\" height=\"88\"onclick=\"showPicture(1)\"></canvas>\
+             <button onclick=\"D(1)\">Delete this picture</button>\
+<canvas class=\"intro\" id=\"myCanvas2\" width=\"88\" height=\"88\"onclick=\"showPicture(2)\"></canvas>\
+<button onclick=\"D(2)\">Delete this picture</button>\
+<canvas class=\"intro\" id=\"myCanvas3\" width=\"88\" height=\"88\"onclick=\"showPicture(3)\"></canvas>\
+<button onclick=\"D(3)\">Delete this picture</button>\
+<canvas class=\"intro\" id=\"myCanvas4\" width=\"88\" height=\"88\"onclick=\"showPicture(4)\"></canvas>\
+<button onclick=\"D(4)\">Delete this picture</button>\
+<canvas class=\"intro\" id=\"myCanvas5\" width=\"88\" height=\"88\"onclick=\"showPicture(5)\"></canvas>\
+<button onclick=\"D(5)\">Delete this picture</button>\
+<canvas class=\"intro\" id=\"myCanvas6\" width=\"88\" height=\"88\"onclick=\"showPicture(6)\"></canvas>\
+<button onclick=\"D(6)\">Delete this picture</button>\
+<form action=\"http://192.168.4.1\">\
+    <input type=\"submit\" value=\"back\">\
+   </form>\
+<script>\
+var z = 1;\
+var zz = 0;\
+var str = 0;\
+var debug = 0;\
+var keepDebug = 0;\
+var nameIdC = [\"myCanvas1\",\"myCanvas2\",\"myCanvas3\",\"myCanvas4\",\"myCanvas5\",\"myCanvas6\"];\
+var dataS1 = [];\
+var dataTemps = localStorage.getItem(\"pic1\").split(\",\");\
+for(jj = 0;jj < 48;jj = jj+8){\
+ for(i = 0;i<8;i++){\
+   dataS1[i] = Number(dataTemps[jj+i]);\
+ }\
+ copyX(dataS1,nameIdC[jj/8]);\
+}\
+function copyX(data,nameId) {\
+var name = nameId;\
+for(j= 0;j < 8;j++){\
+   var xy = data[j];\
+   zz = j;\
+   var base1 = (xy).toString(2);\
+   var b = reverseArr(base1);\
+if(debug == 0){\
+  for( v = 0;v<8;v++){\
+    if((b[v] == 0) && (b[v+1] == 1)){\
+        b[v] = 1;\
+        v = 8;\
+        debug = 1;\
+    }\
+  }\
+}\
+   for(i = 0;i<8;i++){\
+     if((b[i] == 1)){\
+        makePic(name);\
+    }\
+     if((b[i] == 0)){\
+            z = z+1;\
+            if(z > 7){\
+              z = 0;\
+             }\
+      }\
+    if(b[i] === undefined){\
+      z = z+1;\
+      if(z > 7){\
+        z = 0;\
+      }\
+    }\
+if((j == 0) && (i == 0)){\
+   keepDebug = b[0];\
+}\
+   }\
+ }\
+}\
+function makePic(name) {\
+var c = document.getElementById(name);\
+var ctx = c.getContext(\"2d\");\
+ctx.fillStyle = \"#F00\";\
+ctx.fillRect(0,0, 10, 10);\
+var imgData = ctx.getImageData(0, 0, 10, 10);\
+    if(str == 0){\
+str++;\
+    }else{\
+    ctx.putImageData(imgData, (z*11), (zz*11));\
+     if(keepDebug == 0){\
+         ctx.clearRect(0,0, 10, 10);\
+      }\
+    z = z+1;\
+   if(z > 7){\
+       z = 0;\
+    }\
+  }\
+}\
+function reverseArr(input) {\
+    var ret = new Array;\
+    for(var i = input.length-1; i >= 0; i--){\
+        ret.push(input[i]);\
+    }\
+    return ret;\
+}\
+ function showPicture(num) {\
+   var y = \"http://192.168.4.1/showPicT?pic=\"+num;\
+   var x = location.href = y;\
+  }\
+  function D(idP) {\
+     var y = \"http://192.168.4.1/dPic?pic=\"+idP;\
+     var x = location.href = y;\
+  }\
+</script>\
+</body>\
+</html>", picN);
+server.send(200, "text/html", temp);
+}
+
+void handle_dPic() {
+    int num = server.arg("pic").toInt();
+    deletePicById(num);
+     /*
+   * 
+   */
+   checkPicInEEPROM();
+  char temp[1200];
+             snprintf ( temp, 1200, "<html>\
+              <body>\
+              <p>have %d</p>\
+             <form id=\"dj\" action=\"http://192.168.4.1/showPicT\">\
+    <input type=\"submit\" value=\"back\">\
+   </form>\
+   <script>\
+   localStorage.setItem(\"pic1\", \"%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\");\
+   document.forms[\"dj\"].submit();\
+   </script>\
+</body>\
+</html>", picN,
+             dataPack[0][7], dataPack[0][6], dataPack[0][5], dataPack[0][4], dataPack[0][3], dataPack[0][2], dataPack[0][1], dataPack[0][0],
+             dataPack[1][7], dataPack[1][6], dataPack[1][5], dataPack[1][4], dataPack[1][3], dataPack[1][2], dataPack[1][1], dataPack[1][0],
+             dataPack[2][7], dataPack[2][6], dataPack[2][5], dataPack[2][4], dataPack[2][3], dataPack[2][2], dataPack[2][1], dataPack[2][0],
+             dataPack[3][7], dataPack[3][6], dataPack[3][5], dataPack[3][4], dataPack[3][3], dataPack[3][2], dataPack[3][1], dataPack[3][0],
+             dataPack[4][7], dataPack[4][6], dataPack[4][5], dataPack[4][4], dataPack[4][3], dataPack[4][2], dataPack[4][1], dataPack[4][0],
+             dataPack[5][7], dataPack[5][6], dataPack[5][5], dataPack[5][4], dataPack[5][3], dataPack[5][2], dataPack[5][1], dataPack[5][0]);
+server.send(200, "text/html", temp);
+}
 
 void setup() {
 
@@ -458,6 +668,10 @@ void setup() {
   server.on("/chagePic", handle_chagePic);
   server.on("/deletePic", handle_deletePic);
   server.on("/showPic", handle_showPic);
+  server.on("/showPicT", handle_showPicT);
+  server.on("/tempPage", handle_tempPage);
+  server.on("/dPic", handle_dPic);
+
   server.begin();
   Serial.println("HTTP server started");
   //
@@ -581,12 +795,13 @@ void loop() {
   */
 }
 
-String readFiles() {
+String readFiles(String names) {
+
   String data = "";
   bool ok = SPIFFS.begin() ; // s t a r t the f i l e system
   if (ok) { // check i f the f i l e system works
     Serial.println(" ok ");
-    bool exist = SPIFFS.exists ( "/index.html");
+    bool exist = SPIFFS.exists ( "/" + names);
 
     if (exist) {
       Serial.println( "The f i l e e x i s t s ! " ) ;
@@ -709,6 +924,7 @@ void showPic() {
 }
 
 void checkPicInEEPROM() {
+  picN = 0;
   EEPROM.begin(512);
   delay(500);
   //  picN = EEPROM.read(0);
@@ -762,6 +978,33 @@ void setupMPU6050() {
   // verify connection
   Serial.println("Testing device connections...");
   Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
+}
+
+void deletePicById(int numId){
+  
+    Serial.print("Start delete  picture");
+     Serial.println(numId);
+    EEPROM.begin(512);
+    // write a 0 to all 512 bytes of the EEPROM
+    for (int i = ((numId - 1)*8); i < (numId*8); i++) {
+      EEPROM.write(i, 0);
+      EEPROM.commit();
+
+      // turn the LED on when we're done
+      // blink LED to indicate activity
+      blinkState = !blinkState;
+      digitalWrite(LED_PIN, blinkState);
+
+    }
+    delay(20);
+    EEPROM.end();
+    delay(500);
+    // EEPROM.begin(512);
+    //delay(500);
+    picN = 0;
+    checkPicInEEPROM();
+    showPic();
+  
 }
 
 

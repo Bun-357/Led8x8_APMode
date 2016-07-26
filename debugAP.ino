@@ -89,6 +89,7 @@ void showPic();
 void checkPicInEEPROM();
 void setupMPU6050();
 void deletePicById(int numId);
+int checkStratAdd();
 
 /* Just a little test message.  Go to http://192.168.4.1 in a web browser
    connected to this access point to see it.
@@ -136,11 +137,13 @@ void handle_led() {
       //must check null in eeprom
       EEPROM.begin(512);
       int t = 0;
+      //check null add
+      int sa =  checkStratAdd();
       Serial.print("statr add ");
-      Serial.println((8 * picN));
+      Serial.println((8 * sa));
 
-      for (int i = (8 * picN); i < 8 + (8 * picN); i++) {
-        EEPROM.write(i, dataT[i - ( (8 * picN))]);
+      for (int i = (8 * sa); i < 8 + (8 * sa); i++) {
+        EEPROM.write(i, dataT[i - ( (8 * sa))]);
         EEPROM.commit();
         t = i;
       }
@@ -151,8 +154,8 @@ void handle_led() {
 
 
       //
-      for (int i = (8 * picN); i < 8 + (8 * picN ); i++) {
-        dataT[i - ((8 * picN ))] = EEPROM.read(i);
+      for (int i = (8 * sa); i < 8 + (8 * sa ); i++) {
+        dataT[i - ((8 * sa ))] = EEPROM.read(i);
       }
       Serial.println("finish saved to eerom");
       for (int i = 0; i < 8; i++) {
@@ -234,7 +237,7 @@ void handle_chagePic() {
 
   */
   char temp[1020];
-  snprintf ( temp, 1020,"<html>\
+  snprintf ( temp, 1020, "<html>\
   <head>\
     <style>\
       body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
@@ -330,11 +333,11 @@ void handle_showPic() {
   /*
 
   */
-             /*
+  /*
 
-             */
-             char temp[2900];
-             snprintf ( temp, 2900, "<html>\
+  */
+  char temp[2900];
+  snprintf ( temp, 2900, "<html>\
              <body>\
              <style>\
              .intro {\
@@ -460,8 +463,8 @@ function reverseArr(input) {\
 }
 
 void handle_tempPage() {
-   char temp[1200];
-             snprintf ( temp, 1200, "<html>\
+  char temp[1200];
+  snprintf ( temp, 1200, "<html>\
               <body>\
               <p>have %d</p>\
              <form id=\"dj\" action=\"http://192.168.4.1/showPicT\">\
@@ -479,11 +482,11 @@ void handle_tempPage() {
              dataPack[3][7], dataPack[3][6], dataPack[3][5], dataPack[3][4], dataPack[3][3], dataPack[3][2], dataPack[3][1], dataPack[3][0],
              dataPack[4][7], dataPack[4][6], dataPack[4][5], dataPack[4][4], dataPack[4][3], dataPack[4][2], dataPack[4][1], dataPack[4][0],
              dataPack[5][7], dataPack[5][6], dataPack[5][5], dataPack[5][4], dataPack[5][3], dataPack[5][2], dataPack[5][1], dataPack[5][0]);
-server.send(200, "text/html", temp);
+  server.send(200, "text/html", temp);
 }
 
 void handle_showPicT() {
-   checkPicInEEPROM();
+  checkPicInEEPROM();
   Serial.println("handle_showPic");
   //String state = server.arg("pic");
   int num = server.arg("pic").toInt();
@@ -498,11 +501,11 @@ void handle_showPicT() {
     EEPROM.end();
   }
   /*
-   * 
-   */
-   char temp[2940];
-            
-             snprintf ( temp, 2940, "<html>\
+
+  */
+  char temp[2940];
+
+  snprintf ( temp, 2940, "<html>\
              <body>\
              <style>\
              .intro {\
@@ -616,18 +619,18 @@ function reverseArr(input) {\
 </script>\
 </body>\
 </html>", picN);
-server.send(200, "text/html", temp);
+  server.send(200, "text/html", temp);
 }
 
 void handle_dPic() {
-    int num = server.arg("pic").toInt();
-    deletePicById(num);
-     /*
-   * 
-   */
-   checkPicInEEPROM();
+  int num = server.arg("pic").toInt();
+  deletePicById(num);
+  /*
+
+  */
+  checkPicInEEPROM();
   char temp[1200];
-             snprintf ( temp, 1200, "<html>\
+  snprintf ( temp, 1200, "<html>\
               <body>\
               <p>have %d</p>\
              <form id=\"dj\" action=\"http://192.168.4.1/showPicT\">\
@@ -645,7 +648,7 @@ void handle_dPic() {
              dataPack[3][7], dataPack[3][6], dataPack[3][5], dataPack[3][4], dataPack[3][3], dataPack[3][2], dataPack[3][1], dataPack[3][0],
              dataPack[4][7], dataPack[4][6], dataPack[4][5], dataPack[4][4], dataPack[4][3], dataPack[4][2], dataPack[4][1], dataPack[4][0],
              dataPack[5][7], dataPack[5][6], dataPack[5][5], dataPack[5][4], dataPack[5][3], dataPack[5][2], dataPack[5][1], dataPack[5][0]);
-server.send(200, "text/html", temp);
+  server.send(200, "text/html", temp);
 }
 
 void setup() {
@@ -980,31 +983,50 @@ void setupMPU6050() {
   Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
 }
 
-void deletePicById(int numId){
-  
-    Serial.print("Start delete  picture");
-     Serial.println(numId);
-    EEPROM.begin(512);
-    // write a 0 to all 512 bytes of the EEPROM
-    for (int i = ((numId - 1)*8); i < (numId*8); i++) {
-      EEPROM.write(i, 0);
-      EEPROM.commit();
+void deletePicById(int numId) {
 
-      // turn the LED on when we're done
-      // blink LED to indicate activity
-      blinkState = !blinkState;
-      digitalWrite(LED_PIN, blinkState);
+  Serial.print("Start delete  picture");
+  Serial.println(numId);
+  EEPROM.begin(512);
+  // write a 0 to all 512 bytes of the EEPROM
+  for (int i = ((numId - 1) * 8); i < (numId * 8); i++) {
+    EEPROM.write(i, 0);
+    EEPROM.commit();
 
-    }
-    delay(20);
-    EEPROM.end();
-    delay(500);
-    // EEPROM.begin(512);
-    //delay(500);
-    picN = 0;
-    checkPicInEEPROM();
-    showPic();
-  
+    // turn the LED on when we're done
+    // blink LED to indicate activity
+    blinkState = !blinkState;
+    digitalWrite(LED_PIN, blinkState);
+
+  }
+  delay(20);
+  EEPROM.end();
+  delay(500);
+  // EEPROM.begin(512);
+  //delay(500);
+  picN = 0;
+  checkPicInEEPROM();
+  showPic();
+
 }
+
+int checkStratAdd() {
+  int temps[8];
+  int startAddr = 0;
+
+  EEPROM.begin(512);
+  for (int j = 0; j < 512; j += 8) {
+    for (int i = 0; i < 8; i++) {
+      temps[i] = EEPROM.read(i + j);
+
+    }//for i
+    if((temps[0] == 0) && (temps[1] == 0) && (temps[2] == 0) && (temps[3] == 0) && (temps[4] == 0) && (temps[5] == 0) && (temps[6] == 0) && (temps[7] == 0)){
+      //found null
+      startAddr = j/8;
+      j = 512;
+    }
+  }// for j
+  return startAddr;
+}//end function checkStratAdd()
 
 
